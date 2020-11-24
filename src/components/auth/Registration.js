@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 
-export default function Registration() {
+export default function Registration(props) {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [passwordConfirmation, setPasswordConfirmation] = useState("")
@@ -17,7 +17,9 @@ export default function Registration() {
             },
             { withCredentials: true }
         ).then(response => {
-            console.log("registration res", response)
+            if (response.data.status === 'created') {
+                props.handleSuccessfulAuthentication(response.data)
+            }
         }).catch(error => {
             console.log("registration error", error)
         })
