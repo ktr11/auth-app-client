@@ -1,34 +1,33 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 
-export default function Registration(props) {
+export default function Login(props) {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [passwordConfirmation, setPasswordConfirmation] = useState("")
 
     const handleSubmit = (event) => {
-        axios.post("http://localhost:3001/signup",
+        axios.post("http://localhost:3001/login",
             {
                 user: {
                     email: email,
                     password: password,
-                    password_confirmation: passwordConfirmation
                 }
             },
             { withCredentials: true }
         ).then(response => {
-            if (response.data.status === 'created') {
+            if (response.data.logged_in) {
                 props.handleSuccessfulAuthentication(response.data)
             }
         }).catch(error => {
-            console.log("registration error", error)
+            console.log("registration error", error);
         })
         event.preventDefault()
     }
 
     return (
         <div>
-            <p>新規登録</p>
+            <p>ログイン</p>
 
             <form onSubmit={handleSubmit}>
                 <input
@@ -45,15 +44,8 @@ export default function Registration(props) {
                     value={password}
                     onChange={event => setPassword(event.target.value)}
                 />
-                <input
-                    type="password"
-                    name="password_confirmation"
-                    placeholder="確認用パスワード"
-                    value={passwordConfirmation}
-                    onChange={event => setPasswordConfirmation(event.target.value)}
-                />
 
-                <button type="submit">登録</button>
+                <button type="submit">ログイン</button>
             </form>
         </div>
     )
